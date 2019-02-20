@@ -37,11 +37,14 @@ function drawBorder() {
   const hLine = "═".repeat(COLS - 2);
   out.print(0, 0, `╔${ hLine }╗`);
   out.print(0, ROWS - 1, `╚${ hLine }╝`);
+  // out.print(17, 0, `╣ ASCIIMON ╠`);
+  out.print(2, 0, `╣ ASCIIMON v0.1 ╠`);
 
   for (let y = 1; y < ROWS - 1; y++) {
     out.set(0, y, "║");
     out.set(COLS - 1, y, "║");
   }
+
 }
 
 const player = {
@@ -89,11 +92,18 @@ function drawMap(offsetX, offsetY, map) {
   }
 }
 
+function tp(x, y) {
+  player.x = x;
+  player.y = y;
+  console.log("woosh!");
+}
+
 function draw() {
   window.requestAnimationFrame(draw);
 
   drawMap(player.x, player.y, maps.grasslands);
   out.set(23, 14, player.char);
+  out.print(2, ROWS - 1, `╣ x:${ player.x } y:${ player.y } ╠═════`);
 
   out.push();
 }
