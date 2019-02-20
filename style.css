@@ -1,0 +1,17 @@
+body,
+html {
+  margin: 0;
+  background-color: #111;
+}
+
+#container {
+  width: 396px;
+  height: 360px;
+  margin: 7% auto;
+  font-family: "Courier New", Courier, monospace;
+  font-size: 14px;
+  line-height: 13px;
+  white-space: pre-line;
+  word-wrap: break-word;
+  color: #fff;
+}
