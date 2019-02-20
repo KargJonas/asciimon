@@ -47,21 +47,33 @@ function drawBorder() {
 const player = {
   x: 10,
   y: -10,
-  char: "@"
+  char: "@",
+  speed: 1
 };
 
+const keysPressed = {};
 const keymap = {
-  w: () => player.y--,
-  a: () => player.x--,
-  s: () => player.y++,
-  d: () => player.x++,
+  87: () => player.y -= player.speed, // w
+  65: () => player.x -= player.speed, // a
+  83: () => player.y += player.speed, // s
+  68: () => player.x += player.speed, // d
 };
 
 window.addEventListener("keydown", (e) => {
-  const op = keymap[e.key];
-  if (!op) return;
-  op();
+  keysPressed[e.keyCode] = true;
 });
+
+window.addEventListener("keyup", (e) => {
+  keysPressed[e.keyCode] = false;
+});
+
+window.setInterval(() => {
+  Object.entries(keysPressed).map((key) => {
+    if (!key[1]) return;
+    const action = keymap[key[0]];
+    if (action) action();
+  });
+}, 150);
 
 function drawMap(offsetX, offsetY, map) {
   for (let y = 1; y < ROWS - 1; y++) {
