@@ -89,19 +89,36 @@ function clear() {
 
 clear();
 
+function createMap() {
+  input.text(out, 2, 2, "Width?", width => {
+    clear();
+    input.text(out, 2, 2, "Height?", height => {
+      clear();
+      input.text(out, 2, 2, "Background?", fill => {
+        currentMap = [];
+        for (let y = 0; y < height; y++) {
+          currentMap[y] = [];
+          for (let x = 0; x < width; x++) {
+            currentMap[y][x] = fill;
+          }
+        }
+      });
+    });
+  });
+}
+
+function loadMap() {
+  input.text(out, 2, 2, "Enter the name of the map:", (name) => {
+    MapLoader.load(name, true, (map) => {
+      currentMap = map;
+      draw();
+    });
+  });
+}
+
 input.yesNo(out, 2, 2, "Load existing map?", (answer) => {
   clear();
 
-  if (answer) {
-    input.text(out, 2, 2, "Enter the name of the map:", (name) => {
-      MapLoader.load(name, true, (map) => {
-        currentMap = map;
-        draw();
-      });
-    });
-  }
-
-  out.push();
-})
-
-out.push();
+  if (answer) loadMap();
+  else createMap();
+});

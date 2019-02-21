@@ -96,6 +96,8 @@ class Input {
         callback(selection);
       }
     });
+
+    out.push();
   }
 
   text(out, x, y, question, callback) {
@@ -131,5 +133,7 @@ class Input {
       out.print(x + this.inputBuffer.length, y + 2, cursorState ? "░" : " ");
       out.push();
     }, 500);
+
+    out.push();
   }
 }
