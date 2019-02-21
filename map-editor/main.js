@@ -90,13 +90,18 @@ function clear() {
 clear();
 
 input.yesNo(out, 2, 2, "Load existing map?", (answer) => {
-  console.log(answer)
   clear();
 
-  MapLoader.load("grasslands.min", true, (map) => {
-    currentMap = map;
-    draw();
-  });
+  if (answer) {
+    input.text(out, 2, 2, "Enter the name of the map:", (name) => {
+      MapLoader.load(name, true, (map) => {
+        currentMap = map;
+        draw();
+      });
+    });
+  }
+
+  out.push();
 })
 
 out.push();

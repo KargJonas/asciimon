@@ -2,12 +2,11 @@ class Input {
   inputBuffer = "";
   keyBuffer = {};
   actionMap = {};
-  instantActionMap = {};
   rate;
   tempActionMap = {};
-  tempInstantActionMap = {};
   lastUpdate = new Date();
   skip = false;
+  keyDownFuncs = [];
 
   constructor(obj, rate = 200) {
     this.rate = rate;
@@ -15,11 +14,13 @@ class Input {
 
     obj.addEventListener("keydown", (e) => {
       this.keyBuffer[e.code] = true;
+      this.dispatchActions();
 
       if (e.code === "Enter") this.inputBuffer = "";
-      else this.inputBuffer += e.key;
+      else if (e.key.length === 1) this.inputBuffer += e.key;
 
-      this.dispatchActions();
+      this.keyDownFuncs.map(func => func(e));
+
       this.skip = true;
     });
 
@@ -31,7 +32,7 @@ class Input {
   }
 
   dispatchActions() {
-    // Prevent double-stepping and auto-speed
+    // Prevent double-stepping and auto-clicking
     if (this.skip) {
       this.skip = false;
       return;
@@ -44,12 +45,18 @@ class Input {
     });
   }
 
-  dispatchInstantActions() {
-    Object.entries(this.keyBuffer).map((key) => {
-      if (!key[1]) return;
-      const action = this.instantActionMap[key[0]];
-      if (action) action();
-    });
+  keyDown(func) {
+    this.keyDownFuncs.push(func);
+  }
+
+  disableActions() {
+    this.tempActionMap = {};
+    Object.assign(this.tempActionMap, this.actionMap);
+    this.actionMap = {};
+  }
+
+  enableActions() {
+    this.actionMap = this.tempActionMap;
   }
 
   setAction(code, callback) {
@@ -71,8 +78,7 @@ class Input {
     out.print(x, y + 2, " Yes   [No]");
 
     const parent = this;
-    const temp = {};
-    Object.assign(temp, this.actionMap);
+    this.disableActions();
 
     this.setActions({
       KeyD() {
@@ -86,9 +92,44 @@ class Input {
         out.push();
       },
       Enter() {
-        parent.setActions(temp);
+        parent.enableActions();
         callback(selection);
       }
     });
+  }
+
+  text(out, x, y, question, callback) {
+    out.print(x, y, question);
+
+    const parent = this;
+    this.disableActions();
+
+    this.setActions({
+      Enter() {
+        parent.enableActions();
+        window.clearInterval(cursorInterval);
+        callback(parent.inputBuffer);
+      },
+      Backspace() {
+        parent.inputBuffer = parent.inputBuffer.slice(
+          0, parent.inputBuffer.length - 1);
+      }
+    });
+
+    const spaceLine = " ".repeat(COLS - 2);
+
+    this.keyDown(() => {
+      out.print(1, y + 2, spaceLine);
+      out.print(x, y + 2, parent.inputBuffer);
+      out.push();
+    });
+
+    let cursorState = true;
+
+    let cursorInterval = window.setInterval(() => {
+      cursorState = !cursorState;
+      out.print(x + this.inputBuffer.length, y + 2, cursorState ? "░" : " ");
+      out.push();
+    }, 500);
   }
 }
