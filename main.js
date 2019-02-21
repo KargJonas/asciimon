@@ -82,7 +82,7 @@ function draw() {
 }
 
 drawBorder();
-MapLoader.load("grasslands.min", true, (map) => {
+MapLoader.load("maps/grasslands", true, (map) => {
   currentMap = map;
   draw();
 });

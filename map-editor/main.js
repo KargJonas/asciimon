@@ -90,25 +90,26 @@ function clear() {
 clear();
 
 function createMap() {
-  input.text(out, 2, 2, "Width?", width => {
-    clear();
-    input.text(out, 2, 2, "Height?", height => {
-      clear();
-      input.text(out, 2, 2, "Background?", fill => {
-        currentMap = [];
-        for (let y = 0; y < height; y++) {
-          currentMap[y] = [];
-          for (let x = 0; x < width; x++) {
-            currentMap[y][x] = fill;
-          }
-        }
-      });
-    });
-  });
+  // !! This is horrific. I need to make this synchronous.
+  // input.text(out, 2, 2, "Width?", width => {
+  //   clear();
+  //   input.text(out, 2, 2, "Height?", height => {
+  //     clear();
+  //     input.text(out, 2, 2, "Background?", fill => {
+  //       currentMap = [];
+  //       for (let y = 0; y < height; y++) {
+  //         currentMap[y] = [];
+  //         for (let x = 0; x < width; x++) {
+  //           currentMap[y][x] = fill;
+  //         }
+  //       }
+  //     });
+  //   });
+  // });
 }
 
 function loadMap() {
-  input.text(out, 2, 2, "Enter the name of the map:", (name) => {
+  input.text(out, 2, 2, "Enter the location of the map:", (name) => {
     MapLoader.load(name, true, (map) => {
       currentMap = map;
       draw();

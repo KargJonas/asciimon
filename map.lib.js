@@ -1,6 +1,6 @@
 class MapLoader {
-  static load(name, compressed = false, callback) {
-    fetch(`maps/${ name }`)
+  static load(path, compressed = false, callback) {
+    fetch(path)
       .then(res => res.text())
       .then(txt => compressed ? MapLoader.decompress(txt) : txt)
       .then(txt => txt
