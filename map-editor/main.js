@@ -45,10 +45,10 @@ const player = {
 const input = new Input(window, 120);
 
 input.setActions({
-  KeyW() {player.y -= player.speed},
-  KeyA(){player.x -= player.speed},
-  KeyS(){player.y += player.speed},
-  KeyD() {player.x += player.speed},
+  KeyW() { player.y -= player.speed },
+  KeyA() { player.x -= player.speed },
+  KeyS() { player.y += player.speed },
+  KeyD() { player.x += player.speed },
 });
 
 function drawMap(offsetX, offsetY, map) {
@@ -81,19 +81,22 @@ function draw() {
   out.push();
 }
 
+function clear() {
+  out.createBuffer(" ");
+  drawBorder();
+  out.push();
+}
 
-
-drawBorder();
-// out.print(3, 3, "Load existing map?");
-// out.push();
+clear();
 
 input.yesNo(out, 2, 2, "Load existing map?", (answer) => {
+  console.log(answer)
+  clear();
 
+  MapLoader.load("grasslands.min", true, (map) => {
+    currentMap = map;
+    draw();
+  });
 })
 
 out.push();
-
-// MapLoader.load("grasslands.min", true, (map) => {
-//   currentMap = map;
-//   draw();
-// });
