@@ -17,10 +17,10 @@
 const COLS = 47;
 const ROWS = 29;
 
-const out = new Output("#container", COLS, ROWS);
+const out = new Output("#container", COLS, ROWS + 4);
 let currentMap;
 
-out.createBuffer(0);
+out.createBuffer(" ");
 
 function drawBorder() {
   const hLine = "═".repeat(COLS - 2);
@@ -81,8 +81,19 @@ function draw() {
   out.push();
 }
 
+
+
 drawBorder();
-MapLoader.load("grasslands.min", true, (map) => {
-  currentMap = map;
-  draw();
-});
+// out.print(3, 3, "Load existing map?");
+// out.push();
+
+input.yesNo(out, 2, 2, "Load existing map?", (answer) => {
+
+})
+
+out.push();
+
+// MapLoader.load("grasslands.min", true, (map) => {
+//   currentMap = map;
+//   draw();
+// });
