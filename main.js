@@ -17,19 +17,8 @@
 const COLS = 47;
 const ROWS = 29;
 
-const out = new Output("#container", COLS, ROWS);
-const maps = {};
-
-function loadMap(name, callback) {
-  fetch(`maps/${ name }`)
-    .then(res => res.text())
-    .then(item => {
-      maps[name] = item
-        .split("\n")
-        .map(row => row.split(""));
-    })
-    .then(callback);
-}
+const out = new Output("#container", COLS, ROWS + 4);
+let currentMap;
 
 out.createBuffer(0);
 
@@ -44,7 +33,6 @@ function drawBorder() {
     out.set(0, y, "║");
     out.set(COLS - 1, y, "║");
   }
-
 }
 
 const player = {
@@ -101,7 +89,7 @@ function tp(x, y) {
 function draw() {
   window.requestAnimationFrame(draw);
 
-  drawMap(player.x, player.y, maps.grasslands);
+  drawMap(player.x, player.y, currentMap);
   out.set(23, 14, player.char);
   out.print(2, ROWS - 1, `╣ x:${ player.x } y:${ player.y } ╠═════`);
 
@@ -109,5 +97,7 @@ function draw() {
 }
 
 drawBorder();
-
-loadMap("grasslands", draw);
+MapLoader.load("grasslands.min", true, (map) => {
+  currentMap = map;
+  draw();
+});

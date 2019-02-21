@@ -6,8 +6,7 @@ html {
 
 #container {
   width: 396px;
-  height: 360px;
-  margin: 7% auto;
+  margin: 7% auto 0 auto;
   font-family: "Courier New", Courier, monospace;
   font-size: 14px;
   line-height: 13px;
