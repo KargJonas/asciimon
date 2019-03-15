@@ -106,6 +106,9 @@ function createMap() {
               currentMap[y][x] = fill;
             }
           }
+
+          drawBorder();
+          draw();
         });
       });
     });

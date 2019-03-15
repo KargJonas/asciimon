@@ -45,10 +45,10 @@ const player = {
 const input = new Input(window, 120);
 
 input.setActions({
-  KeyW() {player.y -= player.speed},
-  KeyA(){player.x -= player.speed},
-  KeyS(){player.y += player.speed},
-  KeyD() {player.x += player.speed},
+  KeyW() { player.y -= player.speed },
+  KeyA() { player.x -= player.speed },
+  KeyS() { player.y += player.speed },
+  KeyD() { player.x += player.speed },
 });
 
 function drawMap(offsetX, offsetY, map) {
